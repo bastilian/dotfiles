@@ -16,7 +16,12 @@
 # envnpm "grunt"    # expands to `npm install -g grunt`
 # ```
 #
+
+export REPO_REG="\/(.*)\."
 export DOTFILES="${DOTFILES:=$HOME/.dotfiles}"
+
+cd "$DOTFILES"
+source "$DOTFILES/lib/packages"
 
 #
 # `dotter link`
@@ -29,7 +34,9 @@ link-dots() {
 
   for dot in $HOME/.dotfiles/dots/* ; do
     echo "Linking $dot"
-    target="$HOME/.$(basename "$dot")"
+
+    local target="$HOME/.$(basename "$dot")"
+
     rm -fd "$target"
     ln -s "$dot" $target
   done
@@ -46,7 +53,7 @@ fi
 # Installs packages defined in `Packages` for the dotfiles and links included dotfiles and directories from $HOME
 #
 install-packages() {
-  source "$DOTFILES/lib/packages"
+  echo "Installing $1/Packages"
 
   if [ -e "$1/Packages" ]; then
     source "$1/Packages"
@@ -63,18 +70,6 @@ fi
 # Installs default packages defined in `Packages` for the dotfiles and links included dotfiles and directories from $HOME
 #
 install() {
-
-  if [ "$2" ]; then
-    cd "$DOTFILES"
-    re="\/(.*)\."
-    
-    if [[ "$2" =~ $re ]]; then
-      name=${BASH_REMATCH[1]}
-      git submodule add "$2" "dots/$name"
-      git submodule update --init --recursive
-    fi
-  fi
-
   install-packages "$DOTFILES"
   link-dots
 }
@@ -84,23 +79,58 @@ if [ "$1" = "install" ]; then
 fi
 
 #
+# Adds a given git repository url to the dots directory and installs Packages
+#
+add-repository() {
+  if [[ "$1" =~ $REPO_REG ]]; then
+    local name=${BASH_REMATCH[1]}
+
+    git submodule add -f "$1" "dots/$name"
+    git submodule update --init --recursive
+
+    if [ -e "$DOTFILES/dots/$name/Packages" ]; then
+      install-packages "$DOTFILES/dots/$name"
+    fi
+
+    ln -s  "$DOTFILES/dots/$name" "$HOME/.$name"
+
+  fi
+}
+
+#
+# Adds a given directory to the dots directory and installs Packages
+#
+add-directory() {
+  local dot=$(basename "$1")
+  local target="$DOTFILES/dots/${dot#.}"
+
+  cp "$1" "$target"
+  rm -r "$1"
+  ln -s "$target" "$HOME/.$dot"
+
+  if [ -e "$target/Packages" ]; then
+    install-packages "$target"
+  fi
+}
+
+#
 # `dotter add <dotfile-name>`
 #
 # Adds a given dotfile or directory into `$DOTFILES/.dots` and links it.
 #
 add() {
-
   echo "Adding $1 to dotfiles"
+  echo "$repo"
 
-  dot=$(basename "$1")
-  target="$DOTFILES/dots/${dot#.}"
+  if [[ "$1" =~ $REPO_REG ]]; then
+    local name=${BASH_REMATCH[1]}
+    echo $name
+  fi
 
-  cp "$1" "$target"
-  rm -r "$1"
-  # ln -s "$target" "$1"
-
-  if [ -e "$target/Packages"]; then
-    install-packages "$target"
+  if [[ "$1" =~ $REPO_REG ]]; then
+    add-repository "$1"
+  else
+    add-directory "$1"
   fi
 
 }
