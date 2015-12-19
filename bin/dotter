@@ -1,0 +1,123 @@
+#!/bin/bash
+#
+# dotter - OS X dotfile manager
+#
+# - Packages file
+#
+# The `Packages` file in the root of a `dotfile` directory will be sourced on `install`.
+# It defines dependencies such as system packages, rubygems or npm packages.
+#
+# Example:
+# ```
+# pkg "node"        # Defines a system package. expands `brew install`
+# pkg "rbenv"
+# setruby 2.2.3     # Sets the global ruby to the specified version via `rbenv`
+# envgem "bundler"  # expands to `gem install bundler`
+# envnpm "grunt"    # expands to `npm install -g grunt`
+# ```
+#
+export DOTFILES="${DOTFILES:=$HOME/.dotfiles}"
+
+#
+# `dotter link`
+#
+# Links directories in `$DOTFILES/dots` in $HOME as dotfiles
+#
+link-dots() {
+
+  echo "Linking dotfiles from $HOME/.dotfiles"
+
+  for dot in $HOME/.dotfiles/dots/* ; do
+    echo "Linking $dot"
+    target="$HOME/.$(basename "$dot")"
+    rm -fd "$target"
+    ln -s "$dot" $target
+  done
+
+}
+
+if [ "$1" = "link" ]; then
+  link-dots
+fi
+
+#
+# `dotter install-packages <dotfile-directory>`
+#
+# Installs packages defined in `Packages` for the dotfiles and links included dotfiles and directories from $HOME
+#
+install-packages() {
+  source "$DOTFILES/lib/packages"
+
+  if [ -e "$1/Packages" ]; then
+    source "$1/Packages"
+  fi
+}
+
+if [ "$1" = "install-packages" ]; then
+  install-packages "$DOTFILES/dots/$2"
+fi
+
+#
+# `dotter install [git-repository]`
+#
+# Installs default packages defined in `Packages` for the dotfiles and links included dotfiles and directories from $HOME
+#
+install() {
+
+  if [ "$2" ]; then
+    cd "$DOTFILES"
+    re="\/(.*)\."
+    
+    if [[ "$2" =~ $re ]]; then
+      name=${BASH_REMATCH[1]}
+      git submodule add "$2" "dots/$name"
+      git submodule update --init --recursive
+    fi
+  fi
+
+  install-packages "$DOTFILES"
+  link-dots
+}
+
+if [ "$1" = "install" ]; then
+  install $@
+fi
+
+#
+# `dotter add <dotfile-name>`
+#
+# Adds a given dotfile or directory into `$DOTFILES/.dots` and links it.
+#
+add() {
+
+  echo "Adding $1 to dotfiles"
+
+  dot=$(basename "$1")
+  target="$DOTFILES/dots/${dot#.}"
+
+  cp "$1" "$target"
+  rm -r "$1"
+  # ln -s "$target" "$1"
+
+  if [ -e "$target/Packages"]; then
+    install-packages "$target"
+  fi
+
+}
+
+if [ "$1" = "add" ]; then
+  add "$2"
+fi
+
+#
+# `dotter list`
+#
+# Lists dots
+#
+list() {
+  ls "$DOTFILES/dots"
+}
+
+if [ "$1" = "list" ]; then
+  list
+fi

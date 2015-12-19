@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+pkg() {
+  brew install $@
+}
+
+atom-pkg() {
+  apm install $@
+}
+
+setruby() {
+  rbenv global $@
+}
+
+envgem() {
+  gem install $@
+  rbenv rehash
+}
+
+envnpm() {
+  npm install -g $@
+}

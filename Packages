@@ -1,0 +1,16 @@
+pkg "rbenv"
+pkg "docker"
+pkg "docker-compose"
+pkg "docker-machine"
+pkg "docker-swarm"
+pkg "tmux"
+pkg "zsh"
+pkg "node"
+
+setruby 2.2.3
+
+envgem bundler
+envgem rails
+
+envnpm grunt
+envnpm gulp
