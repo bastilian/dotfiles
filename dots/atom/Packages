@@ -1,4 +1,0 @@
-atom-pkg "linter"
-
-atom-pkg "linter-rubocop"
-envgem "rubocop"

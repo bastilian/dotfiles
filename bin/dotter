@@ -1,27 +1,12 @@
 #!/bin/bash
 #
-# dotter - OS X dotfile manager
-#
-# - Packages file
-#
-# The `Packages` file in the root of a `dotfile` directory will be sourced on `install`.
-# It defines dependencies such as system packages, rubygems or npm packages.
-#
-# Example:
-# ```
-# pkg "node"        # Defines a system package. expands `brew install`
-# pkg "rbenv"
-# setruby 2.2.3     # Sets the global ruby to the specified version via `rbenv`
-# envgem "bundler"  # expands to `gem install bundler`
-# envnpm "grunt"    # expands to `npm install -g grunt`
-# ```
+# dotter - dotfile manager in BASH
 #
 
 export REPO_REG="\/(.*)\."
 export DOTFILES="${DOTFILES:=$HOME/.dotfiles}"
 
 cd "$DOTFILES"
-source "$DOTFILES/lib/packages"
 
 #
 # `dotter link`
@@ -30,52 +15,33 @@ source "$DOTFILES/lib/packages"
 #
 link-dots() {
 
-  echo "Linking dotfiles from $HOME/.dotfiles"
+  echo "Initialising dotfiles"
+  cd $DOTFILES
+  git submodule update --init --recursive
 
+  echo "Linking dotfiles from $DOTFILES"
   for dot in $HOME/.dotfiles/dots/* ; do
     echo "Linking $dot"
 
     local target="$HOME/.$(basename "$dot")"
 
-    rm -fd "$target"
+    rm -d "$target"
+
+    if [ -e "$dot/.dotter-pre" ]; then
+      sh "$dot/.dotter-pre"
+    fi
+
     ln -s "$dot" $target
+
+    if [ -e "$dot/.dotter-post" ]; then
+      sh "$dot/.dotter-post"
+    fi
   done
 
 }
 
 if [ "$1" = "link" ]; then
   link-dots
-fi
-
-#
-# `dotter install-packages <dotfile-directory>`
-#
-# Installs packages defined in `Packages` for the dotfiles and links included dotfiles and directories from $HOME
-#
-install-packages() {
-  echo "Installing $1/Packages"
-
-  if [ -e "$1/Packages" ]; then
-    source "$1/Packages"
-  fi
-}
-
-if [ "$1" = "install-packages" ]; then
-  install-packages "$DOTFILES/dots/$2"
-fi
-
-#
-# `dotter install [git-repository]`
-#
-# Installs default packages defined in `Packages` for the dotfiles and links included dotfiles and directories from $HOME
-#
-install() {
-  install-packages "$DOTFILES"
-  link-dots
-}
-
-if [ "$1" = "install" ]; then
-  install $@
 fi
 
 #
