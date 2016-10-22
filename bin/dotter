@@ -25,17 +25,17 @@ link-dots() {
 
     local target="$HOME/.$(basename "$dot")"
 
-    if [ -e "$target" ]; then
+    if [ -f "$target" ]; then
       rm -d "$target"
     fi
 
-    if [ -e "$dot/.dotter-pre" ]; then
+    if [ -f "$dot/.dotter-pre" ]; then
       sh "$dot/.dotter-pre"
     fi
 
     ln -s "$dot" $target
 
-    if [ -e "$dot/.dotter-post" ]; then
+    if [ -f "$dot/.dotter-post" ]; then
       sh "$dot/.dotter-post"
     fi
   done
