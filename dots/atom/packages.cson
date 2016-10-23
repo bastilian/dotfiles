@@ -1,0 +1,10 @@
+packages: [
+  "color-picker"
+  "docker"
+  "language-docker"
+  "linter"
+  "linter-docker"
+  "linter-eslint"
+  "linter-rubocop"
+  "package-sync"
+]
