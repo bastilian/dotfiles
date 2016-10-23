@@ -1,14 +1,17 @@
 "*":
+  core:
+    excludeVcsIgnoredPaths: false
+    telemetryConsent: "limited"
+  editor:
+    fontSize: 11
+    invisibles: {}
+    scrollPastEnd: true
+    showIndentGuide: true
+    showInvisibles: true
   "exception-reporting":
     userId: "0c20128e-d05a-27c6-7466-f2c54eabd244"
+  "package-sync":
+    createOnChange: true
+    forceOverwrite: true
   welcome:
     showOnStartup: false
-  editor:
-    fontSize: 13
-    invisibles: {}
-  core:
-    themes: [
-      "one-dark-ui"
-      "toxin-syntax"
-    ]
-    excludeVcsIgnoredPaths: false
