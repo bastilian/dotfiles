@@ -16,26 +16,29 @@ cd "$DOTFILES"
 link-dots() {
 
   echo "Initialising dotfiles"
+
   cd $DOTFILES
   git submodule update --init --recursive
 
   echo "Linking dotfiles from $DOTFILES"
-  for dot in $HOME/.dotfiles/dots/* ; do
+  for dot in $DOTFILES/dots/* ; do
     echo "Linking $dot"
 
     local target="$HOME/.$(basename "$dot")"
 
     if [ -e "$target" ]; then
-      rm -d "$target"
+      rm -r "$target"
     fi
 
     if [ -f "$dot/.dotter-pre" ]; then
-     source "$dot/.dotter-pre"
+      echo "Running pre hook for $dot"
+      source "$dot/.dotter-pre"
     fi
 
     ln -s "$dot" $target
 
     if [ -f "$dot/.dotter-post" ]; then
+      echo "Running post hook for $dot"
       source "$dot/.dotter-post"
     fi
   done
