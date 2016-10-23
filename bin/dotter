@@ -3,7 +3,7 @@
 # dotter - dotfile manager in BASH
 #
 
-export REPO_REG="\(\w+://)(.+@)*([\w\d\.]+)(:[\d]+){0,1}/*(.*)\."
+export REPO_REG="((git|ssh|http(s)?)|(git@[\w\.]+))(:(//)?)(([\w\.@\:/\-~])+)(\.git)(/)?"
 export DOTFILES="${DOTFILES:=$HOME/.dotfiles}"
 
 cd "$DOTFILES"
@@ -54,17 +54,12 @@ fi
 #
 add-repository() {
   if [[ "$1" =~ $REPO_REG ]]; then
-    local name=${BASH_REMATCH[1]}
+    local name=$(echo $1 | grep -o '\w*[^.git$]' | tail -1)
 
     git submodule add -f "$1" "dots/$name"
     git submodule update --init --recursive
 
-    if [ -e "$DOTFILES/dots/$name/Packages" ]; then
-      install-packages "$DOTFILES/dots/$name"
-    fi
-
     ln -s  "$DOTFILES/dots/$name" "$HOME/.$name"
-
   fi
 }
 
