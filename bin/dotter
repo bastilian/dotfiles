@@ -3,7 +3,7 @@
 # dotter - dotfile manager in BASH
 #
 
-export REPO_REG="\/(.*)\."
+export REPO_REG="\(\w+://)(.+@)*([\w\d\.]+)(:[\d]+){0,1}/*(.*)\."
 export DOTFILES="${DOTFILES:=$HOME/.dotfiles}"
 
 cd "$DOTFILES"
