@@ -32,14 +32,14 @@ link-dots() {
 
     if [ -f "$dot/.dotter-pre" ]; then
       echo "Running pre hook for $dot"
-      exec "$dot/.dotter-pre"
+      (exec "$dot/.dotter-pre" > /dev/null)
     fi
 
     ln -s "$dot" $target
 
     if [ -f "$dot/.dotter-post" ]; then
       echo "Running post hook for $dot"
-      exec "$dot/.dotter-post"
+      (exec "$dot/.dotter-post" > /dev/null)
     fi
   done
 
