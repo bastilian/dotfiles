@@ -1,0 +1,16 @@
+[core]
+  excludesfile = $HOME/.gitignore_global
+[user]
+  name = Sebastian Gräßl
+  email = sebastian@validcode.me
+  signingkey = DB16AF7F0B3B8228
+[alias]
+  please = push --force-with-lease
+  commend = commit --amend --no-edit
+  it = !git init && git commit -m “root” --allow-empty
+  stsh = stash --keep-index
+  staash = stash --include-untracked
+  staaash = stash --all
+  shorty = status --short --branch
+[status]
+  submoduleSummary = true
