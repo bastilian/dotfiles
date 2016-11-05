@@ -29,8 +29,6 @@
   "package-sync":
     createOnChange: true
     forceOverwrite: true
-  "pull-requests":
-    githubAuthorizationToken: "4c1d65e3e835860986525e3677321cb07b86ee9e"
   semanticolor:
     cCakeFileLanguageCsharp:
       "attribute-name": "colorize"
