@@ -1,0 +1,20 @@
+#!/bin/bash
+
+if [ "`git branch | grep -c develop`" = '1' ]; then
+  MASTER_BRANCH='develop'
+else
+  MASTER_BRANCH='master'
+fi
+
+CURRENT_BRANCH=`git rev-parse --abbrev-ref HEAD`
+PR_BRANCH_NAME="$CURRENT_BRANCH-PR"
+
+echo "Master branch is: $MASTER_BRANCH"
+echo "Squashing and merging $CURRENT_BRANCH into $PR_BRANCH_NAME"
+
+git checkout $MASTER_BRANCH
+git branch -D $PR_BRANCH_NAME
+git checkout -b $PR_BRANCH_NAME
+git merge --squash $CURRENT_BRANCH
+git commit
+git checkout $CURRENT_BRANCH
