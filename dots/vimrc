@@ -1,27 +1,9 @@
+" Basic Configuration
 set nocompatible
-filetype off
-
-" Configure Vundle
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-
-Plugin 'VundleVim/Vundle.vim'
-Plugin 'tpope/vim-fugitive'
-Plugin 'lokaltog/vim-powerline'
-Plugin 'scrooloose/nerdtree'
-Plugin 'scrooloose/nerdcommenter'
-Plugin 'bronson/vim-trailing-whitespace'
-Plugin 'airblade/vim-gitgutter'
-
-call vundle#end()
-filetype plugin indent on
-
-" Start NERDTree automatically
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
-
-let NERDTreeShowHidden=1
+set hidden
+filetype on
+syntax on
+color default
 
 " Remap pane moving
 nnoremap <C-J> <C-W><C-J>
@@ -29,6 +11,122 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
-set splitbelow
-set splitright
+let mapleader = "\\"
+
+set backspace=indent,eol,start
+set clipboard=unnamed
+set number
+set expandtab
+set shiftwidth=2
+set softtabstop=2
+set autoindent
+set smartindent
+set nowrap
+
+" Enable Mouse support
+set ttymouse=xterm2
+set mouse=a
+autocmd VimEnter,FocusGained,BufEnter * set ttymouse=xterm2
+
+" Turn on spellchecking
+setlocal spell spelllang=en_us
+autocmd BufRead,BufNewFile * setlocal spell
+
+" Configure Vundle & Plugins
+" make sure Vundle is installed when bootstrapping environment
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+Plugin 'VundleVim/Vundle.vim'
+
+" Airline
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+
+" Navigation
+Plugin 'scrooloose/nerdtree'
+Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'majutsushi/tagbar'
+Plugin 'mileszs/ack.vim'
+
+" Git
+Plugin 'tpope/vim-git'
+Plugin 'airblade/vim-gitgutter'
+Plugin 'tpope/vim-fugitive'
+
+" Ruby/Rails
+Plugin 'vim-ruby/vim-ruby'
+Plugin 'tpope/vim-rails'
+
+" JavaScript
+Plugin 'pangloss/vim-javascript'
+
+" Editing
+Plugin 'scrooloose/nerdcommenter'
+Plugin 'scrooloose/syntastic'
+Plugin 'sjl/gundo.vim'
+Plugin 'tpope/vim-endwise'
+Plugin '907th/vim-auto-save'
+Plugin 'ngmy/vim-rubocop'
+Plugin 'mtscout6/syntastic-local-eslint.vim'
+Plugin 'bronson/vim-trailing-whitespace'
+Plugin 'ntpeters/vim-better-whitespace'
+Plugin 'Raimondi/delimitMate'
+
+" Markdown
+Plugin 'gabrielelana/vim-markdown'
+
+" Completion
+Plugin 'shougo/neocomplete.vim'
+Plugin 'valloric/youcompleteme'
+
+" Misc.
+Plugin 'mattn/gist-vim'
+
+call vundle#end()
+filetype plugin indent on
+
+" Configure NERDTree
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
+
+map <C-n> :NERDTreeToggle<CR>
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
+" Configure CtrlP
+let g:ctrlp_dont_split = 'nerdtree'
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/]\.*(git|hg|svn|node_modules|tmp|log)$',
+  \ 'file': '\v\.(exe|so|dll)$',
+\}
+
+" Configure Tagbar shortcut
+map <C-t> :TagbarToggle<CR>
+
+" Configure ack.vim
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
+endif
+
+" Configure git gutter
+let g:gitgutter_sign_column_always = 1
+
+" Configure Syntastic
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+" Enable auto saving
+let g:auto_save = 1
+
+" Configure autostripping trailing whitespace
+autocmd BufWritePre * StripWhitespace
+
+" Prevent youcompleteme to throw an pattern error
+set shortmess+=c
 
