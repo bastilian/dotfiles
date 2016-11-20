@@ -1,0 +1,11 @@
+set main-options = --exclude=refs/stash --all
+set mouse = yes
+set mouse-scroll = 4
+set focus-child = yes
+set tab-size = 2
+set main-view = line-number:no,interval=5 id:no date:default author:full,width=16 commit-title:yes,graph,refs,overflow=no
+set editor-line-number = yes
+bind refs P ?git-squash-pr %(branch)
+bind refs p !git push origin %(branch)
+bind refs b ?hub browse %(repo:remote) -- %(branch)
+
