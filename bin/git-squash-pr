@@ -6,6 +6,7 @@ else
   MASTER_BRANCH='master'
 fi
 
+# TODO: Allow branch to be passed along
 CURRENT_BRANCH=`git rev-parse --abbrev-ref HEAD`
 PR_BRANCH_NAME="$CURRENT_BRANCH-PR"
 
@@ -13,8 +14,13 @@ echo "Master branch is: $MASTER_BRANCH"
 echo "Squashing and merging $CURRENT_BRANCH into $PR_BRANCH_NAME"
 
 git checkout $MASTER_BRANCH
+if [ `git branch --list $PR_BRANCH_NAME` ]
+then
+ PREVIOUS_MSG=`git log -1 --pretty=%B $PR_BRANCH_NAME`
+fi
 git branch -D $PR_BRANCH_NAME
 git checkout -b $PR_BRANCH_NAME
 git merge --squash $CURRENT_BRANCH
+echo $PREVIOUS_MSG > .git/SQUASH_MSG
 git commit
 git checkout $CURRENT_BRANCH
