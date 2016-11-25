@@ -4,7 +4,7 @@
 
 ```
 $ git clone https://github.com/bastilian/dotfiles.git $HOME/.dotfiles
-$ ~/.dotfiles/bin/dotter link-dots
+$ ~/.dotfiles/bin/dotter link
 ```
 
 
