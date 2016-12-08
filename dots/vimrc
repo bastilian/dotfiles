@@ -2,7 +2,7 @@
 set nocompatible
 set hidden
 filetype on
-syntax on
+syntax enable
 color default
 
 " Remap pane moving
@@ -81,9 +81,14 @@ Plugin 'valloric/youcompleteme'
 
 " Misc.
 Plugin 'mattn/gist-vim'
+Plugin 'jacoborus/tender'
 
 call vundle#end()
 filetype plugin indent on
+
+" Theme
+colorscheme tender
+let g:airline_theme = 'tender'
 
 " Configure NERDTree
 autocmd StdinReadPre * let s:std_in=1
