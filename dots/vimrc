@@ -52,6 +52,7 @@ Plugin 'mileszs/ack.vim'
 Plugin 'tpope/vim-git'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'tpope/vim-fugitive'
+Plugin 'Xuyuanp/nerdtree-git-plugin'
 
 " Ruby/Rails
 Plugin 'vim-ruby/vim-ruby'
@@ -77,18 +78,29 @@ Plugin 'gabrielelana/vim-markdown'
 
 " Completion
 Plugin 'shougo/neocomplete.vim'
-Plugin 'valloric/youcompleteme'
+
+" Snippets
+Plugin 'MarcWeber/vim-addon-mw-utils'
+Plugin 'tomtom/tlib_vim'
+Plugin 'garbas/vim-snipmate'
+Plugin 'honza/vim-snippets'
+Plugin 'spf13/snipmate-snippets'
 
 " Misc.
 Plugin 'mattn/gist-vim'
-Plugin 'jacoborus/tender'
+Plugin 'djoshea/vim-autoread'
+
+" Themes
+Plugin 'tyrannicaltoucan/vim-quantum'
 
 call vundle#end()
 filetype plugin indent on
 
-" Theme
-colorscheme tender
-let g:airline_theme = 'tender'
+" Quantum Theme
+set background=dark
+let g:quantum_black = 1
+colorscheme quantum
+let g:airline_theme='quantum'
 
 " Configure NERDTree
 autocmd StdinReadPre * let s:std_in=1
@@ -102,13 +114,17 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 let g:ctrlp_dont_split = 'nerdtree'
 let g:ctrlp_custom_ignore = {
   \ 'dir':  '\v[\/]\.*(git|hg|svn|node_modules|tmp|log)$',
-  \ 'file': '\v\.(exe|so|dll)$',
+  \ 'file': '\v\.(exe|so|dll|log)$',
 \}
 
 " Configure Tagbar shortcut
 map <C-t> :TagbarToggle<CR>
 
 " Configure ack.vim
+cnoreabbrev Ack Ack!
+nnoremap <Leader>a :Ack
+map <C-f> :Ack
+
 if executable('ag')
   let g:ackprg = 'ag --vimgrep'
 endif
@@ -132,6 +148,15 @@ let g:auto_save = 1
 " Configure autostripping trailing whitespace
 autocmd BufWritePre * StripWhitespace
 
-" Prevent youcompleteme to throw an pattern error
-set shortmess+=c
+" disable AutoComplPop.
+let g:acp_enableAtStartup = 0
+" Use neocomplete.
+
+let g:neocomplete#enable_at_startup = 1
+
+" Use smartcase.
+let g:neocomplete#enable_smart_case = 1
+
+" Set minimum syntax keyword length.
+let g:neocomplete#sources#syntax#min_keyword_length = 3
 
