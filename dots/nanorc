@@ -2,7 +2,6 @@ set mouse
 set speller "aspell -x -c"
 set autoindent
 set tabsize "2"
-set tempfile
 set tabstospaces
 set multibuffer
 
