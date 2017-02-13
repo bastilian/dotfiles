@@ -1,5 +1,12 @@
 *~
+*.swp
+*.swo
+*.retry
 .DS_Store
 .docker*
 .gitlint
 .puppet
+config/ssl
+.ignore
+.rspec
+.ruby-version
