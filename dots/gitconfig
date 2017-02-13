@@ -23,3 +23,5 @@
   submoduleSummary = true
 [commit]
   gpgsign = true
+[push]
+	default = current
