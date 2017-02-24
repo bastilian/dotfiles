@@ -2,7 +2,7 @@
   excludesfile = ~/.gitignore_global
 [user]
   name = Sebastian Gräßl
-  email = sebastian@validcode.me
+  email = mail@bastilian.me
   signingkey = DB16AF7F0B3B8228
 [alias]
   cob= checkout -b
@@ -24,4 +24,4 @@
 [commit]
   gpgsign = true
 [push]
-	default = current
+  default = current
