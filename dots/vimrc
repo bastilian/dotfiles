@@ -1,9 +1,11 @@
 " Basic Configuration
 set nocompatible
 set hidden
+set noswapfile
 filetype on
 syntax enable
 color default
+hi Normal ctermbg=none
 
 " Remap pane moving
 nnoremap <C-J> <C-W><C-J>
@@ -60,6 +62,10 @@ Plugin 'tpope/vim-rails'
 
 " JavaScript
 Plugin 'pangloss/vim-javascript'
+Plugin 'mxw/vim-jsx'
+
+" CSS
+Plugin 'ap/vim-css-color'
 
 " Editing
 Plugin 'scrooloose/nerdcommenter'
@@ -103,10 +109,10 @@ colorscheme quantum
 let g:airline_theme='quantum'
 
 " Configure NERDTree
+let NERDTreeMinimalUI = 1
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
-
 map <C-n> :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
@@ -122,8 +128,7 @@ map <C-t> :TagbarToggle<CR>
 
 " Configure ack.vim
 cnoreabbrev Ack Ack!
-nnoremap <Leader>a :Ack
-map <C-f> :Ack
+map <C-f> :Ack!
 
 if executable('ag')
   let g:ackprg = 'ag --vimgrep'
