@@ -97,15 +97,23 @@ Plugin 'djoshea/vim-autoread'
 
 " Themes
 Plugin 'tyrannicaltoucan/vim-quantum'
+Plugin 'fneu/breezy'
 
 call vundle#end()
 filetype plugin indent on
 
 " Quantum Theme
+"set background=dark
+"let g:quantum_black = 1
+"colorscheme quantum
+"let g:airline_theme='quantum'
+
+" Breezy
 set background=dark
-let g:quantum_black = 1
-colorscheme quantum
-let g:airline_theme='quantum'
+set termguicolors
+colorscheme breezy
+let g:airline_theme='breezy'
+
 hi Normal ctermbg=none
 
 " Configure NERDTree
