@@ -5,7 +5,6 @@ set noswapfile
 filetype on
 syntax enable
 color default
-hi Normal ctermbg=none
 
 " Remap pane moving
 nnoremap <C-J> <C-W><C-J>
@@ -107,6 +106,7 @@ set background=dark
 let g:quantum_black = 1
 colorscheme quantum
 let g:airline_theme='quantum'
+hi Normal ctermbg=none
 
 " Configure NERDTree
 let NERDTreeMinimalUI = 1
