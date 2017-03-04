@@ -48,6 +48,7 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'majutsushi/tagbar'
 Plugin 'mileszs/ack.vim'
+Plugin 'ap/vim-buftabline'
 
 " Git
 Plugin 'tpope/vim-git'
@@ -58,6 +59,7 @@ Plugin 'Xuyuanp/nerdtree-git-plugin'
 " Ruby/Rails
 Plugin 'vim-ruby/vim-ruby'
 Plugin 'tpope/vim-rails'
+Plugin 'sunaku/vim-ruby-minitest'
 
 " JavaScript
 Plugin 'pangloss/vim-javascript'
@@ -94,6 +96,8 @@ Plugin 'spf13/snipmate-snippets'
 " Misc.
 Plugin 'mattn/gist-vim'
 Plugin 'djoshea/vim-autoread'
+Plugin 'tmux-plugins/vim-tmux-focus-events'
+Plugin 'rizzatti/dash.vim'
 
 " Themes
 Plugin 'tyrannicaltoucan/vim-quantum'
@@ -173,3 +177,6 @@ let g:neocomplete#enable_smart_case = 1
 " Set minimum syntax keyword length.
 let g:neocomplete#sources#syntax#min_keyword_length = 3
 
+" Configure buffer switching
+nnoremap <C-R> :bnext<CR>
+nnoremap <C-E> :bprev<CR>
