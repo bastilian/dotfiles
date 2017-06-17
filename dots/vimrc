@@ -2,9 +2,11 @@
 set nocompatible
 set hidden
 set noswapfile
+set exrc
 filetype on
 syntax enable
-color default
+color delek
+hi Normal guibg=#242527 guifg=#FFFFFF
 
 " Remap pane moving
 nnoremap <C-J> <C-W><C-J>
@@ -23,21 +25,49 @@ set softtabstop=2
 set autoindent
 set smartindent
 set nowrap
+set showcmd
+set wildmenu
+set lazyredraw
+
+" Folding
+set foldenable
+set foldmethod=syntax
+set foldlevelstart=10
+set foldnestmax=10
+
+nnoremap <space> za
+set foldmethod=indent
+
+" Search
+set hlsearch!
+set showmatch
+set incsearch
+set hlsearch
+nnoremap <C-d> :set hlsearch!<CR>
+
+" Backup files
+set backup
+set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+set backupskip=/tmp/*,/private/tmp/*
+set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+set writebackup
 
 " Enable Mouse support
 set ttymouse=xterm2
 set mouse=a
 autocmd VimEnter,FocusGained,BufEnter * set ttymouse=xterm2
 
-" Turn on spellchecking
+" Turn on spell checking
 setlocal spell spelllang=en_us
-autocmd BufRead,BufNewFile * setlocal spell
 
-" Configure Vundle & Plugins
+" Configure Vundle & plugins
 " make sure Vundle is installed when bootstrapping environment
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
+
+" .editorconf
+Plugin 'editorconfig/editorconfig-vim'
 
 " Airline
 Plugin 'vim-airline/vim-airline'
@@ -68,17 +98,22 @@ Plugin 'mxw/vim-jsx'
 " CSS
 Plugin 'ap/vim-css-color'
 
+" Misc. Syntax
+Plugin 'ekalinin/Dockerfile.vim'
+Plugin 'chase/vim-ansible-yaml'
+
 " Editing
 Plugin 'scrooloose/nerdcommenter'
-Plugin 'scrooloose/syntastic'
 Plugin 'sjl/gundo.vim'
 Plugin 'tpope/vim-endwise'
 Plugin '907th/vim-auto-save'
-Plugin 'ngmy/vim-rubocop'
-Plugin 'mtscout6/syntastic-local-eslint.vim'
 Plugin 'bronson/vim-trailing-whitespace'
 Plugin 'ntpeters/vim-better-whitespace'
 Plugin 'Raimondi/delimitMate'
+
+" Linter
+Plugin 'w0rp/ale'
+Plugin 'rainerborene/vim-reek'
 
 " Markdown
 Plugin 'gabrielelana/vim-markdown'
@@ -93,35 +128,21 @@ Plugin 'garbas/vim-snipmate'
 Plugin 'honza/vim-snippets'
 Plugin 'spf13/snipmate-snippets'
 
+" Org-mode
+Plugin 'jceb/vim-orgmode'
+
 " Misc.
 Plugin 'mattn/gist-vim'
 Plugin 'djoshea/vim-autoread'
 Plugin 'tmux-plugins/vim-tmux-focus-events'
 Plugin 'rizzatti/dash.vim'
 
-" Themes
-Plugin 'tyrannicaltoucan/vim-quantum'
-Plugin 'fneu/breezy'
-
 call vundle#end()
 filetype plugin indent on
 
-" Quantum Theme
-"set background=dark
-"let g:quantum_black = 1
-"colorscheme quantum
-"let g:airline_theme='quantum'
-
-" Breezy
-set background=dark
-set termguicolors
-colorscheme breezy
-let g:airline_theme='breezy'
-
-hi Normal ctermbg=none
-
 " Configure NERDTree
 let NERDTreeMinimalUI = 1
+let NERDTreeWinSize=30
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
@@ -132,15 +153,29 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 let g:ctrlp_dont_split = 'nerdtree'
 let g:ctrlp_custom_ignore = {
   \ 'dir':  '\v[\/]\.*(git|hg|svn|node_modules|tmp|log)$',
-  \ 'file': '\v\.(exe|so|dll|log)$',
+  \ 'file': '\v\.(exe|so|dll|log)*$',
 \}
+
+" Avoids CtrlP opening in NERDTree
+function! CtrlPCommand()
+    let c = 0
+    let wincount = winnr('$')
+    " Don't open it here if current buffer is not writable (e.g. NERDTree)
+    while !empty(getbufvar(+expand("<abuf>"), "&buftype")) && c < wincount
+        exec 'wincmd w'
+        let c = c + 1
+    endwhile
+    exec 'CtrlP'
+endfunction
+
+let g:ctrlp_cmd = 'call CtrlPCommand()'
 
 " Configure Tagbar shortcut
 map <C-t> :TagbarToggle<CR>
 
 " Configure ack.vim
 cnoreabbrev Ack Ack!
-map <C-f> :Ack!
+map <C-f> :Ack
 
 if executable('ag')
   let g:ackprg = 'ag --vimgrep'
@@ -149,15 +184,12 @@ endif
 " Configure git gutter
 let g:gitgutter_sign_column_always = 1
 
-" Configure Syntastic
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
+" Configure ALE Statusline
+let g:ale_set_loclist = 0
+let g:ale_set_quickfix = 1
+let g:ale_lint_on_save = 1
+let g:ale_lint_on_text_changed = 0
+let g:reek_on_loading = 0
 
 " Enable auto saving
 let g:auto_save = 1
@@ -168,15 +200,17 @@ autocmd BufWritePre * StripWhitespace
 " disable AutoComplPop.
 let g:acp_enableAtStartup = 0
 " Use neocomplete.
-
 let g:neocomplete#enable_at_startup = 1
-
 " Use smartcase.
 let g:neocomplete#enable_smart_case = 1
-
 " Set minimum syntax keyword length.
 let g:neocomplete#sources#syntax#min_keyword_length = 3
+
+" Make fugitive work correctlly with Editorconf
+let g:EditorConfig_exclude_patterns = ['fugitive://.*']
 
 " Configure buffer switching
 nnoremap <C-R> :bnext<CR>
 nnoremap <C-E> :bprev<CR>
+
+set completefunc=syntaxcomplete#Complete
