@@ -134,8 +134,8 @@ Plugin 'jceb/vim-orgmode'
 " Misc.
 Plugin 'mattn/gist-vim'
 Plugin 'djoshea/vim-autoread'
-Plugin 'tmux-plugins/vim-tmux-focus-events'
 Plugin 'rizzatti/dash.vim'
+Plugin 'sjl/vitality.vim'
 
 call vundle#end()
 filetype plugin indent on
