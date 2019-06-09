@@ -3,6 +3,7 @@ set nocompatible
 set hidden
 set noswapfile
 set exrc
+set encoding=UTF-8
 filetype on
 syntax enable
 color delek
@@ -182,9 +183,10 @@ if executable('ag')
 endif
 
 " Configure git gutter
-let g:gitgutter_sign_column_always = 1
+set signcolumn=yes
 
 " Configure ALE Statusline
+
 let g:ale_set_loclist = 0
 let g:ale_set_quickfix = 1
 let g:ale_lint_on_save = 1
@@ -212,5 +214,7 @@ let g:EditorConfig_exclude_patterns = ['fugitive://.*']
 " Configure buffer switching
 nnoremap <C-R> :bnext<CR>
 nnoremap <C-E> :bprev<CR>
+
+let g:jsx_ext_required = 0
 
 set completefunc=syntaxcomplete#Complete

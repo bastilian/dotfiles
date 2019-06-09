@@ -1,6 +1,8 @@
 [core]
   excludesfile = ~/.gitignore_global
-  editor = vim
+  editor = nano
+  filemode = true
+  autocrlf = false
 [user]
   name = Sebastian Gräßl
   email = mail@bastilian.me

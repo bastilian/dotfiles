@@ -10,3 +10,4 @@ config/ssl
 .ignore
 .rspec
 .ruby-version
+.editorconfig
