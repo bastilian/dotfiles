@@ -10,7 +10,21 @@ export LC_ALL=en_US.UTF-8
 export EDITOR='mate -w'
 export GIT_EDITOR='nano'
 
-export ZPLUG_HOME=/usr/local/opt/zplug
+case `uname` in
+  Darwin)
+    export ZPLUG_HOME="/usr/local/opt/zplug"
+    export RBENV_ROOT="/usr/local/var/rbenv"
+  ;;
+  Linux)
+    export RBENV_ROOT="$HOME/.rbenv"
+    export PATH="$HOME/.rbenv/bin:$PATH"
+    export ZPLUG_HOME="$HOME/.zplug"
+  ;;
+  FreeBSD)
+    # commands for FreeBSD go here
+  ;;
+esac
+
 source $ZPLUG_HOME/init.zsh
 
 zplug "modules/prompt", from:prezto
@@ -37,8 +51,6 @@ zplug load
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-# rbenv
-export RBENV_ROOT="/usr/local/var/rbenv"
 if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 
 alias ls='ls -G'
