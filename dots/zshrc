@@ -1,0 +1,80 @@
+export PATH="$PATH:/usr/local/bin"
+export PATH="$HOME/.dotfiles/bin:$PATH"
+export PATH="$HOME/.yarn/bin:$PATH"
+export PATH="/usr/local/sbin:$PATH"
+
+export HISTFILE=~/.zhistory
+export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+
+export EDITOR='mate -w'
+export GIT_EDITOR='nano'
+
+export ZPLUG_HOME=/usr/local/opt/zplug
+source $ZPLUG_HOME/init.zsh
+
+zplug "modules/prompt", from:prezto
+zplug "modules/git", from:prezto
+zplug "zsh-users/zsh-syntax-highlighting", defer:2
+zplug "zsh-users/zsh-autosuggestions"
+zplug "zsh-users/zsh-history-substring-search"
+
+zstyle ':prezto:module:prompt' theme 'powerline'
+
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+
+# Install plugins if there are plugins that have not been installed
+if ! zplug check --verbose; then
+  printf "Install? [y/N]: "
+  if read -q; then
+    echo; zplug install
+  fi
+fi
+# Then, source plugins and add commands to $PATH
+zplug load
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# rbenv
+export RBENV_ROOT="/usr/local/var/rbenv"
+if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
+
+alias ls='ls -G'
+
+# Docker aliases
+alias dc="docker"
+alias machine="docker-machine"
+alias dcm="docker-machine"
+alias compose="docker-compose"
+alias dcc="docker-compose"
+
+alias a="atom"
+alias gh="github"
+alias gst="git status"
+eval "$(hub alias -s)"
+
+alias n="nano"
+alias nreadme="nano README.md"
+alias nzshrc="nano $HOME/.zshrc"
+alias szsh="source $HOME/.zshrc"
+
+alias ccat='pygmentize -g -O style=colorful'
+alias tmux="TERM=screen-256color tmux"
+
+alias be="bundle exec"
+alias rst="bundle exec ruby -I'lib:test'"
+
+alias fm="foreman"
+alias fms="foreman start"
+alias vm-start="VBoxManage startvm --type headless"
+alias vm="VBoxManage"
+alias t="tig"
+alias atit="atom ."
+alias git="hub"
+alias tg="tig"
+alias mux="tmuxinator"
+alias v="vim"
+alias clear='clear && printf "\e[3J"';
+alias lift="open -a ForkLift";
