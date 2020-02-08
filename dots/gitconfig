@@ -1,8 +1,6 @@
 [core]
-  excludesfile = ~/.gitignore_global
+  excludesfile = /Users/bastilian/.gitignore_global
   editor = nano
-  filemode = true
-  autocrlf = false
 [user]
   name = Sebastian Gräßl
   email = mail@bastilian.me
@@ -28,8 +26,5 @@
   gpgsign = true
 [push]
   default = current
-[merge]
-  tool = vimdiff
-  conflictstyle = diff3
-[mergetool]
-  prompt = false
+[pull]
+  rebase = true

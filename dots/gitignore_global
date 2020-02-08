@@ -11,3 +11,5 @@ config/ssl
 .rspec
 .ruby-version
 .editorconfig
+.afpDeleted*
+.tm_properties
