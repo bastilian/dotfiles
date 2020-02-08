@@ -78,3 +78,12 @@ alias mux="tmuxinator"
 alias v="vim"
 alias clear='clear && printf "\e[3J"';
 alias lift="open -a ForkLift";
+
+readme () {
+  mdless $(ls | grep -i readme)
+}
+
+# from http://blog.metamatt.com/blog/2013/01/09/previewing-markdown-files-from-the-terminal/
+mdless () {
+  pandoc -s -f markdown -t man "$*" | groff -T utf8 -man | less;
+}
