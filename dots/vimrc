@@ -6,7 +6,7 @@ set exrc
 set encoding=UTF-8
 filetype on
 syntax enable
-color onedark
+color peachpuff
 hi Normal guibg=#242527 guifg=#FFFFFF
 
 " Remap pane moving
