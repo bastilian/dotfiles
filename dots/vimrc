@@ -6,7 +6,7 @@ set exrc
 set encoding=UTF-8
 filetype on
 syntax enable
-color delek
+color onedark
 hi Normal guibg=#242527 guifg=#FFFFFF
 
 " Remap pane moving
@@ -137,6 +137,7 @@ Plugin 'mattn/gist-vim'
 Plugin 'djoshea/vim-autoread'
 Plugin 'rizzatti/dash.vim'
 Plugin 'sjl/vitality.vim'
+Plugin 'rakr/vim-one'
 
 call vundle#end()
 filetype plugin indent on
