@@ -51,8 +51,11 @@ zplug load
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
-
+if [ -f $RBENV_ROOT/bin/rbenv ]; then
+  if which rbenv > /dev/null; then
+    eval "$(rbenv init -)";
+  fi
+fi
 alias ls='ls -G'
 
 # Docker aliases
