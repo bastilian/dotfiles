@@ -19,7 +19,7 @@ zplug "zsh-users/zsh-syntax-highlighting", defer:2
 zplug "zsh-users/zsh-autosuggestions"
 zplug "zsh-users/zsh-history-substring-search"
 
-zstyle ':prezto:module:prompt' theme 'powerline'
+zstyle ':prezto:module:prompt' theme 'powerlevel10k'
 
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
