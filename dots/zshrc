@@ -25,10 +25,15 @@ case `uname` in
   ;;
 esac
 
+###
+# Plugins
+###
+
 source $ZPLUG_HOME/init.zsh
 
 zplug "modules/prompt", from:prezto
 zplug "modules/git", from:prezto
+zplug "plugins/textmate", from:oh-my-zsh
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
 zplug "zsh-users/zsh-autosuggestions"
 zplug "zsh-users/zsh-history-substring-search"
@@ -51,6 +56,8 @@ zplug load
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
+####
+
 if [ -f $RBENV_ROOT/bin/rbenv ]; then
   if which rbenv > /dev/null; then
     eval "$(rbenv init -)";
@@ -66,7 +73,6 @@ alias compose="docker-compose"
 alias dcc="docker-compose"
 
 alias a="atom"
-alias gh="github"
 alias gst="git status"
 eval "$(hub alias -s)"
 
