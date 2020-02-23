@@ -13,3 +13,4 @@ config/ssl
 .editorconfig
 .afpDeleted*
 .tm_properties
+.tmp

@@ -4,7 +4,7 @@
 [user]
   name = Sebastian Gräßl
   email = mail@bastilian.me
-  signingkey = DB16AF7F0B3B8228
+  signingkey = 7268B677F7E925FB
 [alias]
   cob= checkout -b
   please = push --force-with-lease
