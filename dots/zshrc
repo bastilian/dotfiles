@@ -67,16 +67,12 @@ alias ls='ls -G'
 
 # Docker aliases
 alias dc="docker"
-alias machine="docker-machine"
 alias dcm="docker-machine"
-alias compose="docker-compose"
 alias dcc="docker-compose"
 
-alias a="atom"
 alias gst="git status"
 eval "$(hub alias -s)"
 
-alias n="nano"
 alias nreadme="nano README.md"
 alias nzshrc="nano $HOME/.zshrc"
 alias szsh="source $HOME/.zshrc"
@@ -87,16 +83,7 @@ alias tmux="TERM=screen-256color tmux"
 alias be="bundle exec"
 alias rst="bundle exec ruby -I'lib:test'"
 
-alias fm="foreman"
-alias fms="foreman start"
-alias vm-start="VBoxManage startvm --type headless"
-alias vm="VBoxManage"
-alias t="tig"
-alias atit="atom ."
-alias git="hub"
-alias tg="tig"
 alias mux="tmuxinator"
-alias v="vim"
 alias clear='clear && printf "\e[3J"';
 alias lift="open -a ForkLift";
 
